@@ -80,7 +80,7 @@ namespace ADSProject.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult Delete(int idCarrera)
         {
             try
