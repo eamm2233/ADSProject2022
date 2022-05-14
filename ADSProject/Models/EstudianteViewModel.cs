@@ -6,6 +6,7 @@ namespace ADSProject.Models
     public class EstudianteViewModel
     {
         [Display(Name = "ID")]
+        [Key]
         public int idEstudiante { get; set; }
 
         [Required(ErrorMessage = Constants.REQUIRED_FIELD)]
@@ -24,5 +25,6 @@ namespace ADSProject.Models
         [StringLength(50, MinimumLength = 10, ErrorMessage = "La longitud del campo no debe ser mayor a 50 caracteres ni menor de 10 caracteres.")]
         [Display(Name = "Correo")]
         public string correoEstudiante { get; set; }
+        public bool estado { get; set; }
     }
 }

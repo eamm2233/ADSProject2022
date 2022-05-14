@@ -10,6 +10,7 @@ namespace ADSProject.Models
     public class GrupoViewModel
     {
         [Display(Name = "ID")]
+        [Key]
         public int idGrupo { get; set; }
 
         [Required(ErrorMessage = Constants.REQUIRED_FIELD)]
@@ -31,5 +32,6 @@ namespace ADSProject.Models
         [Required(ErrorMessage = Constants.REQUIRED_FIELD)]
         [Display(Name = "Año")]
         public string anio { get; set; }
+        public bool estado { get; set; }
     }
 }
