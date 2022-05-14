@@ -34,7 +34,7 @@ namespace ADSProject.Repository
         {
             try
             {
-                var item = applicationDbContext.Materias.SingleOrDefault(x => x.idMateria == x.idMateria);
+                var item = applicationDbContext.Materias.SingleOrDefault(x => x.idMateria == idMateria);
                 applicationDbContext.Entry(item).CurrentValues.SetValues(materiaViewModel);
                 applicationDbContext.SaveChanges();
                 return materiaViewModel.idMateria;
@@ -50,7 +50,7 @@ namespace ADSProject.Repository
         {
             try
             {
-                var item = applicationDbContext.Materias.SingleOrDefault(x => x.idMateria == x.idMateria);
+                var item = applicationDbContext.Materias.SingleOrDefault(x => x.idMateria == idMateria);
                 //applicationDbContext.Materias.Remove(item);
                 item.estado = false;
                 applicationDbContext.Entry(item).Property(x => x.estado).IsModified = true;

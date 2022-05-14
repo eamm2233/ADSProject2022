@@ -12,7 +12,7 @@ namespace ADSProject.Repository
 
         int agregarProfesor(ProfesorViewModel profesorViewModel);
 
-        int actualizarProfesor(int idProfeosr, ProfesorViewModel profesorViewModel);
+        int actualizarProfesor(int idProfesor, ProfesorViewModel profesorViewModel);
 
         bool eliminarProfesor(int idProfesor);
 

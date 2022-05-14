@@ -35,7 +35,7 @@ namespace ADSProject.Repository
         {
             try
             {
-                var item = applicationDbContext.Estudiantes.SingleOrDefault(x => x.idEstudiante == x.idEstudiante);
+                var item = applicationDbContext.Estudiantes.SingleOrDefault(x => x.idEstudiante == idEstudiante);
                 applicationDbContext.Entry(item).CurrentValues.SetValues(estudianteViewModel);
                 applicationDbContext.SaveChanges();
                 return estudianteViewModel.idEstudiante;
@@ -51,7 +51,7 @@ namespace ADSProject.Repository
         {
             try
             {
-                var item = applicationDbContext.Estudiantes.SingleOrDefault(x => x.idEstudiante == x.idEstudiante);
+                var item = applicationDbContext.Estudiantes.SingleOrDefault(x => x.idEstudiante == idEstudiante);
                 //applicationDbContext.Estudiantes.Remove(item);
                 item.estado = false;
                 applicationDbContext.Entry(item).Property(x=> x.estado).IsModified = true;

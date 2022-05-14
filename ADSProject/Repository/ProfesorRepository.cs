@@ -30,11 +30,11 @@ namespace ADSProject.Repository
             }
         }
 
-        public int actualizarProfesor(int idProfeosr, ProfesorViewModel profesorViewModel)
+        public int actualizarProfesor(int idProfesor, ProfesorViewModel profesorViewModel)
         {
             try
             {
-                var item = applicationDbContext.Profesores.SingleOrDefault(x => x.idProfesor == x.idProfesor);
+                var item = applicationDbContext.Profesores.SingleOrDefault(x => x.idProfesor == idProfesor);
                 applicationDbContext.Entry(item).CurrentValues.SetValues(profesorViewModel);
                 applicationDbContext.SaveChanges();
                 return profesorViewModel.idProfesor;
@@ -51,7 +51,7 @@ namespace ADSProject.Repository
         {
             try
             {
-                var item = applicationDbContext.Profesores.SingleOrDefault(x => x.idProfesor == x.idProfesor);
+                var item = applicationDbContext.Profesores.SingleOrDefault(x => x.idProfesor == idProfesor);
                 //applicationDbContext.Profesores.Remove(item);
                 item.estado = false;
                 applicationDbContext.Entry(item).Property(x => x.estado).IsModified = true;

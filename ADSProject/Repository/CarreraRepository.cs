@@ -32,7 +32,7 @@ namespace ADSProject.Repository
         {
             try
             {
-                var item = applicationDbContext.Carreras.SingleOrDefault(x => x.idCarrera == x.idCarrera);
+                var item = applicationDbContext.Carreras.SingleOrDefault(x => x.idCarrera == idCarrera);
                 applicationDbContext.Entry(item).CurrentValues.SetValues(carreraViewModel);
                 applicationDbContext.SaveChanges();
                 return carreraViewModel.idCarrera;
@@ -49,7 +49,7 @@ namespace ADSProject.Repository
         {
             try
             {
-                var item = applicationDbContext.Carreras.SingleOrDefault(x => x.idCarrera == x.idCarrera);
+                var item = applicationDbContext.Carreras.SingleOrDefault(x => x.idCarrera == idCarrera);
                 //applicationDbContext.Carreras.Remove(item);
                 item.estado = false;
                 applicationDbContext.Entry(item).Property(x => x.estado).IsModified = true;
