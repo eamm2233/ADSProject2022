@@ -1,37 +1,49 @@
-﻿using System;
+﻿using ADSProject.Utils;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using ADSProject.Utils;
-using System.ComponentModel.DataAnnotations;
 
 namespace ADSProject.Models
 {
     public class GrupoViewModel
     {
-        [Display(Name = "ID")]
         [Key]
+        [Display(Name = "Id Grupo")]
         public int idGrupo { get; set; }
 
+        [Display(Name = "Carrera")]
         [Required(ErrorMessage = Constants.REQUIRED_FIELD)]
-        [Display(Name = "ID Carrera")]
         public int idCarrera { get; set; }
 
+        [Display(Name = "Materia")]
         [Required(ErrorMessage = Constants.REQUIRED_FIELD)]
-        [Display(Name = "ID Materia")]
         public int idMateria { get; set; }
 
+        [Display(Name = "Profesor")]
         [Required(ErrorMessage = Constants.REQUIRED_FIELD)]
-        [Display(Name = "ID Profesor")]
         public int idProfesor { get; set; }
 
-        [Required(ErrorMessage = Constants.REQUIRED_FIELD)]
         [Display(Name = "Ciclo")]
-        public string ciclo { get; set; }
+        public String ciclo { get; set; }
 
-        [Required(ErrorMessage = Constants.REQUIRED_FIELD)]
-        [Display(Name = "Año")]
-        public string anio { get; set; }
+        [Display(Name = "Anio")]
+        public int anio { get; set; }
+
         public bool estado { get; set; }
+
+
+        [ForeignKey("idCarrera")]
+        public CarreraViewModel Carreras { get; set; }
+
+        [ForeignKey("idMateria")]
+        public MateriaViewModel Materias { get; set; }
+
+        [ForeignKey("idProfesor")]
+        public ProfesorViewModel Profesores { get; set; }
+
+        public ICollection<AsignacionGrupoViewModel> AsignacionGrupos { get; set; }
     }
 }

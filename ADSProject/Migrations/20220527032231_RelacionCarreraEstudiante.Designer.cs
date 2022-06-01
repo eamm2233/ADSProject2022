@@ -3,42 +3,22 @@ using ADSProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ADSProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220527032231_RelacionCarreraEstudiante")]
+    partial class RelacionCarreraEstudiante
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.16")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ADSProject.Models.AsignacionGrupoViewModel", b =>
-                {
-                    b.Property<int>("idAsigacion")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("idEstudiante")
-                        .HasColumnType("int");
-
-                    b.Property<int>("idGrupo")
-                        .HasColumnType("int");
-
-                    b.HasKey("idAsigacion");
-
-                    b.HasIndex("idEstudiante");
-
-                    b.HasIndex("idGrupo");
-
-                    b.ToTable("AsignacionGrupos");
-                });
 
             modelBuilder.Entity("ADSProject.Models.CarreraViewModel", b =>
                 {
@@ -132,12 +112,6 @@ namespace ADSProject.Migrations
 
                     b.HasKey("idGrupo");
 
-                    b.HasIndex("idCarrera");
-
-                    b.HasIndex("idMateria");
-
-                    b.HasIndex("idProfesor");
-
                     b.ToTable("Grupos");
                 });
 
@@ -151,17 +125,12 @@ namespace ADSProject.Migrations
                     b.Property<bool>("estado")
                         .HasColumnType("bit");
 
-                    b.Property<int>("idCarrera")
-                        .HasColumnType("int");
-
                     b.Property<string>("nombreMateria")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("idMateria");
-
-                    b.HasIndex("idCarrera");
 
                     b.ToTable("Materias");
                 });
@@ -196,25 +165,6 @@ namespace ADSProject.Migrations
                     b.ToTable("Profesores");
                 });
 
-            modelBuilder.Entity("ADSProject.Models.AsignacionGrupoViewModel", b =>
-                {
-                    b.HasOne("ADSProject.Models.EstudianteViewModel", "Estudiantes")
-                        .WithMany("AsignacionGrupos")
-                        .HasForeignKey("idEstudiante")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ADSProject.Models.GrupoViewModel", "Grupos")
-                        .WithMany("AsignacionGrupos")
-                        .HasForeignKey("idGrupo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Estudiantes");
-
-                    b.Navigation("Grupos");
-                });
-
             modelBuilder.Entity("ADSProject.Models.EstudianteViewModel", b =>
                 {
                     b.HasOne("ADSProject.Models.CarreraViewModel", "Carreras")
@@ -224,54 +174,6 @@ namespace ADSProject.Migrations
                         .IsRequired();
 
                     b.Navigation("Carreras");
-                });
-
-            modelBuilder.Entity("ADSProject.Models.GrupoViewModel", b =>
-                {
-                    b.HasOne("ADSProject.Models.CarreraViewModel", "Carreras")
-                        .WithMany()
-                        .HasForeignKey("idCarrera")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ADSProject.Models.MateriaViewModel", "Materias")
-                        .WithMany()
-                        .HasForeignKey("idMateria")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ADSProject.Models.ProfesorViewModel", "Profesores")
-                        .WithMany()
-                        .HasForeignKey("idProfesor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Carreras");
-
-                    b.Navigation("Materias");
-
-                    b.Navigation("Profesores");
-                });
-
-            modelBuilder.Entity("ADSProject.Models.MateriaViewModel", b =>
-                {
-                    b.HasOne("ADSProject.Models.CarreraViewModel", "Carreras")
-                        .WithMany()
-                        .HasForeignKey("idCarrera")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Carreras");
-                });
-
-            modelBuilder.Entity("ADSProject.Models.EstudianteViewModel", b =>
-                {
-                    b.Navigation("AsignacionGrupos");
-                });
-
-            modelBuilder.Entity("ADSProject.Models.GrupoViewModel", b =>
-                {
-                    b.Navigation("AsignacionGrupos");
                 });
 #pragma warning restore 612, 618
         }

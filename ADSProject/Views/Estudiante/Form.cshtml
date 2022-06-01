@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Form";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<CarreraViewModel> lstCarreras = new List<CarreraViewModel>();
+
+    lstCarreras = ViewBag.Carreras;
 }
 
 <h1>Form</h1>
@@ -12,7 +16,7 @@
 <div class="row">
     <div class="col-md-4">
         <input type="hidden" id="operacion" value="@ViewData["Operaciones"]" />
-        <input type="hidden" id="_redirectURL" value="@Url.Action("Index", "Estudiante")"/>
+        <input type="hidden" id="_redirectURL" value="@Url.Action("Index", "Estudiante")" />
         <form asp-action="Form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -38,6 +42,17 @@
                 <input asp-for="correoEstudiante" class="form-control" />
                 <span asp-validation-for="correoEstudiante" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="idCarrera" class="control-label"></label>
+                <select asp-for="idCarrera" class="form-control">
+                    <option selected disabled>Seleccione una opcion</option>
+                    @foreach (var item in lstCarreras)
+                    {
+                        <option value="@item.idCarrera">@item.NombreCarrera</option>
+                    }
+                    <span asp-validation-for="idCarrera" class="text-danger"></span>
+                </select>
+            </div>
             <input type="checkbox" asp-for="estado" value="true" type="hidden" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -47,21 +62,24 @@
 </div>
 
 <div>
-    <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+    <a asp-action="Index">Regresar</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
 <script>
-        $(document).ready(function () {
-            // Cuando la operacion sobre el formulario es de lectura.
-            if ($("#operacion").val() == "leer") {
-                $("form").find("input,select").attr("disabled", true);
-            }
-        });
-    //agregando ajax
+    $(document).ready(function () {
+        // Cuando la operacion sobre el formulario es de lectura.
+        if ($("#operacion").val() == "leer") {
+            $("form").find("input,select").attr("disabled", true);
+        }
+    });
+    // agregando ajax
     $("form").addClass("form-ajax");
-    //activando ajax
+    // activando ajax
     initAjaxForm();
+
 </script>
+
 }

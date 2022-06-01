@@ -33,9 +33,11 @@ namespace ADSProject
             services.AddTransient<IProfesorRepository, ProfesorRepository>();
             services.AddTransient<ICarreraRepository, CarreraRepository>();
             services.AddTransient<IGrupoRepository, GrupoRepository>();
-            // Configuración DataBase
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<IAsignacionGrupoRepository, AsignacionGrupoRepository>();
 
+            // Configuracion de DB
+            services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,7 +1,9 @@
 ﻿using ADSProject.Models;
 using ADSProject.Repository;
 using ADSProject.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +14,14 @@ namespace ADSProject.Controllers
     public class MateriaController : Controller
     {
         private readonly IMateriaRepository materiaRepository;
+        private readonly ICarreraRepository carreraRepository;
+        private readonly ILogger<EstudianteController> logger;
 
-        public MateriaController(IMateriaRepository materiaRepository)
+        public MateriaController(IMateriaRepository materiaRepository, ICarreraRepository carreraRepository, ILogger<EstudianteController> logger)
         {
             this.materiaRepository = materiaRepository;
+            this.carreraRepository = carreraRepository;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -23,8 +29,7 @@ namespace ADSProject.Controllers
         {
             try
             {
-                var item = materiaRepository.obtenerMateria();
-
+                var item = materiaRepository.obtenerMateria(new String[] { "Carreras" });
                 return View(item);
             }
             catch (Exception)
@@ -32,25 +37,24 @@ namespace ADSProject.Controllers
 
                 throw;
             }
-
         }
-
         [HttpGet]
-        public IActionResult Form(int? idMateria, Operaciones operaciones)
+        public IActionResult Form (int? idMateria, Operaciones operaciones)
         {
             try
             {
                 var materia = new MateriaViewModel();
-
-                if (idMateria.HasValue)
+                if(idMateria.HasValue)
                 {
-                    materia = materiaRepository.obtenerMateriaPorID(idMateria.Value);
+                    materia = materiaRepository.ObtenerMateriaPorID(idMateria.Value);
+                    
                 }
-                // Indica el tipo de operacion que es esta realizando
                 ViewData["Operaciones"] = operaciones;
 
-                return View(materia);
+                // obteniendo todas las carreras disponibles
+                ViewBag.Carreras = carreraRepository.obtenerCarrera();
 
+                return View(materia);
             }
             catch (Exception)
             {
@@ -58,23 +62,40 @@ namespace ADSProject.Controllers
                 throw;
             }
         }
-
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Form(MateriaViewModel materiaViewModel)
         {
             try
             {
-                if (materiaViewModel.idMateria == 0) // En caso de insertar
+                if (ModelState.IsValid)
                 {
-                    materiaRepository.agregarMateria(materiaViewModel);
+                    int id = 0;
+                    if (materiaViewModel.idMateria == 0) // En caso de insertar
+                    {
+                        id = materiaRepository.agregarMateria(materiaViewModel);
+                    }
+                    else // En caso de actualizar
+                    {
+                       id = materiaRepository.actualizarMateria
+                            (materiaViewModel.idMateria, materiaViewModel);
+                    }
+
+                    if (id > 0)
+                    {
+                        return StatusCode(StatusCodes.Status200OK);
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status202Accepted);
+                    }
                 }
-                else // En caso de actualizar
+                else
                 {
-                    materiaRepository.actualizarMateria
-                        (materiaViewModel.idMateria, materiaViewModel);
+                    return StatusCode(StatusCodes.Status400BadRequest);
                 }
 
-                return RedirectToAction("Index");
+               // return RedirectToAction("Index");
             }
             catch (Exception)
             {
@@ -82,7 +103,6 @@ namespace ADSProject.Controllers
                 throw;
             }
         }
-
         [HttpPost]
         public IActionResult Delete(int idMateria)
         {

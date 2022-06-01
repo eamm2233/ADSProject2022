@@ -21,14 +21,14 @@
 
             </div>
             <div class="form-group">
-                <label asp-for="codigoCarrera" class="control-label"></label>
-                <input asp-for="codigoCarrera" class="form-control" />
-                <span asp-validation-for="codigoCarrera" class="text-danger"></span>
+                <label asp-for="CodigoCarrera" class="control-label"></label>
+                <input asp-for="CodigoCarrera" class="form-control" />
+                <span asp-validation-for="CodigoCarrera" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="nombreCarrera" class="control-label"></label>
-                <input asp-for="nombreCarrera" class="form-control" />
-                <span asp-validation-for="nombreCarrera" class="text-danger"></span>
+                <label asp-for="NombreCarrera" class="control-label"></label>
+                <input asp-for="NombreCarrera" class="form-control" />
+                <span asp-validation-for="NombreCarrera" class="text-danger"></span>
             </div>
             <input type="checkbox" asp-for="estado" value="true" type="hidden" />
             <div class="form-group">
@@ -39,21 +39,24 @@
 </div>
 
 <div>
-    <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+    <a asp-action="Index">Regresar</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
+
+    <script>
     $(document).ready(function () {
-        // Cuando la operacion sobre el formulario es de lectura.
-        if ($("#operacion").val() == "leer") {
-            $("form").find("input,select").attr("disabled", true);
-        }
+            // Cuando la operacion sobre el formulario es de lectura.
+            if ($("#operacion").val() == "leer") {
+                $("form").find("input,select").attr("disabled", true);
+            }
     });
-    //agregando ajax
-    $("form").addClass("form-ajax");
-    //activando ajax
-    initAjaxForm();
-</script>
+        // agregando ajax
+        $("form").addClass("form-ajax");
+        // activando ajax
+        initAjaxForm();
+
+    </script>
+
 }

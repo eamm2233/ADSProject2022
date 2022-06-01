@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ADSProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220513222341_MyFirstMigration")]
-    partial class MyFirstMigration
+    [Migration("20220527222141_RelacionMateriaGrupo")]
+    partial class RelacionMateriaGrupo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,18 +27,18 @@ namespace ADSProject.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("codigoCarrera")
+                    b.Property<string>("CodigoCarrera")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("NombreCarrera")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("estado")
                         .HasColumnType("bit");
-
-                    b.Property<string>("nombreCarrera")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("idCarrera");
 
@@ -70,12 +70,17 @@ namespace ADSProject.Migrations
                     b.Property<bool>("estado")
                         .HasColumnType("bit");
 
+                    b.Property<int>("idCarrera")
+                        .HasColumnType("int");
+
                     b.Property<string>("nombresEstudiante")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("idEstudiante");
+
+                    b.HasIndex("idCarrera");
 
                     b.ToTable("Estudiantes");
                 });
@@ -87,12 +92,10 @@ namespace ADSProject.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("anio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("anio")
+                        .HasColumnType("int");
 
                     b.Property<string>("ciclo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("estado")
@@ -109,6 +112,12 @@ namespace ADSProject.Migrations
 
                     b.HasKey("idGrupo");
 
+                    b.HasIndex("idCarrera");
+
+                    b.HasIndex("idMateria");
+
+                    b.HasIndex("idProfesor");
+
                     b.ToTable("Grupos");
                 });
 
@@ -122,12 +131,17 @@ namespace ADSProject.Migrations
                     b.Property<bool>("estado")
                         .HasColumnType("bit");
 
+                    b.Property<int>("idCarrera")
+                        .HasColumnType("int");
+
                     b.Property<string>("nombreMateria")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("idMateria");
+
+                    b.HasIndex("idCarrera");
 
                     b.ToTable("Materias");
                 });
@@ -144,7 +158,7 @@ namespace ADSProject.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("correoProfesor")
+                    b.Property<string>("correoEstudiante")
                         .IsRequired()
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
@@ -160,6 +174,55 @@ namespace ADSProject.Migrations
                     b.HasKey("idProfesor");
 
                     b.ToTable("Profesores");
+                });
+
+            modelBuilder.Entity("ADSProject.Models.EstudianteViewModel", b =>
+                {
+                    b.HasOne("ADSProject.Models.CarreraViewModel", "Carreras")
+                        .WithMany()
+                        .HasForeignKey("idCarrera")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Carreras");
+                });
+
+            modelBuilder.Entity("ADSProject.Models.GrupoViewModel", b =>
+                {
+                    b.HasOne("ADSProject.Models.CarreraViewModel", "Carreras")
+                        .WithMany()
+                        .HasForeignKey("idCarrera")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ADSProject.Models.MateriaViewModel", "Materias")
+                        .WithMany()
+                        .HasForeignKey("idMateria")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ADSProject.Models.ProfesorViewModel", "Profesores")
+                        .WithMany()
+                        .HasForeignKey("idProfesor")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Carreras");
+
+                    b.Navigation("Materias");
+
+                    b.Navigation("Profesores");
+                });
+
+            modelBuilder.Entity("ADSProject.Models.MateriaViewModel", b =>
+                {
+                    b.HasOne("ADSProject.Models.CarreraViewModel", "Carreras")
+                        .WithMany()
+                        .HasForeignKey("idCarrera")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Carreras");
                 });
 #pragma warning restore 612, 618
         }
